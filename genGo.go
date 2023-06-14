@@ -222,7 +222,8 @@ func (gen *CodeGenerator) GoComplexType(v *ComplexType) {
 			if fieldType == "time.Time" {
 				gen.ImportTime = true
 			}
-			content += fmt.Sprintf("\t%s\t%s%s\t`xml:\"%s\"`\n", genGoFieldName(element.Name, false), plural, fieldType, element.Name)
+			content += fmt.Sprintf("\t%s\t%s%s\t`xml:\"%s\" json:\"%s\"`\n",
+				genGoFieldName(element.Name, false), plural, fieldType, element.Name, element.Name)
 		}
 		if len(v.Base) > 0 {
 			// If the type is a built-in type, generate a Value field as chardata.

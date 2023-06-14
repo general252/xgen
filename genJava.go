@@ -57,7 +57,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;`
+import javax.xml.bind.annotation.XmlValue;
+import com.google.gson.annotations.SerializedName;`
 
 	f.Write([]byte(fmt.Sprintf("%s\n\npackage %s;\n\n%s\n%s", copyright, packageName, importPackage, gen.Field)))
 	return err
@@ -169,7 +170,10 @@ func (gen *CodeGenerator) JavaComplexType(v *ComplexType) {
 			if element.Plural {
 				fieldType = fmt.Sprintf("List<%s>", fieldType)
 			}
-			content += fmt.Sprintf("\t@XmlElement(required = true, name = \"%s\")\n\tprotected %s %s;\n", element.Name, fieldType, genJavaFieldName(element.Name, false))
+			content += fmt.Sprintf("\t//@XmlElement(required = true, name = \"%s\")\n\t//@SerializedName(\"%s\")\n\tpublic %s %s;\n",
+				element.Name, element.Name,
+				fieldType,
+				genJavaFieldName(element.Name, false))
 		}
 
 		if len(v.Base) > 0 && isBuiltInJavaType(v.Base) {
